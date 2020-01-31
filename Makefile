@@ -6,7 +6,7 @@ all : co_main clean_o
 objects = main.o co_coroutine.o
 
 co_main : $(objects)
-	gcc -g -m64 -Wall -o co_main  co_swap.s $(objects)
+	gcc -g -m64 -Wall -Wint-conversion -o co_main  co_swap.s $(objects)
 
 main.o : main.c 
 co_coroutine.o : co_coroutine.c

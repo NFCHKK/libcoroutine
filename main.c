@@ -2,13 +2,13 @@
 #include<stdlib.h>
 #include"co_coroutine.h"
 
-char bcoro1Run = 0, bcoro2Run = 0;
+uint8_t bcoro1Run = 0, bcoro2Run = 0;
 void coro1()
 {
     g_scheduler.stcontext[1] = _co_new();
     printf("coro1 start\n");
     bcoro1Run = 1;
-    int a = 0, b = 1;
+    int32_t a = 0, b = 1;
     while(g_scheduler.stcontext[1])
     {
         sleep(1);
@@ -24,7 +24,7 @@ void coro2()
    g_scheduler.stcontext[2] = _co_new();
    printf("coro2 start\n");
    bcoro2Run = 1;
-   int a = 0, b = 1;
+   int32_t a = 0, b = 1;
     while(g_scheduler.stcontext[2])
     {
         sleep(1);

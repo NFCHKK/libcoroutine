@@ -4,13 +4,13 @@
 #define DEFAULT_STACK_SIZE (1024 * 1024)
 
 
-long base = 0, top = 0; 
+uint64_t base = 0, top = 0; 
 scheduler_t g_scheduler;
 
 ctx_t *_co_new()
 {
     ctx_t* ctx = (ctx_t *)malloc(sizeof(ctx_t));
-    char* stack = (char *)malloc(sizeof(char) * DEFAULT_STACK_SIZE);
+    uint8_t* stack = (char *)malloc(sizeof(uint8_t) * DEFAULT_STACK_SIZE);
     ctx->ss_size = DEFAULT_STACK_SIZE;
     ctx->ss_stack = stack; 
 
@@ -35,7 +35,7 @@ void _co_delete(ctx_t* cur)
 }
 
 
-void co_savecontext(ctx_t* cur, char* tbase, char* ttop)
+void co_savecontext(ctx_t* cur, uint8_t* tbase, uint8_t* ttop)
 {
     if(cur)
     {
@@ -72,7 +72,6 @@ void co_yield(ctx_t* cur)
 
 void co_resume(ctx_t* next)
 {
-    char dummy;
     _co_getstackpre(&base, &top);
     co_savecontext(g_scheduler.mainctx, base, top);
     //主协程退出点
