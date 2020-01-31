@@ -1,6 +1,6 @@
 
 
-all : co_main
+all : co_main clean_o
 .PHONY : all
 
 objects = main.o co_coroutine.o

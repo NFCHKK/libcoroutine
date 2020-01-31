@@ -1,5 +1,7 @@
 .globl co_swap
+#if !defined( __APPLE__)
 .type co_swap, @function
+#endif
 co_swap:
 
    leaq 8(%rsp),%rax     # 保存
@@ -42,7 +44,9 @@ co_swap:
    ret
 
 .globl co_getenv
+#if !defined( __APPLE__ )
 .type co_getenv, @function
+#endif
 co_getenv:
     leaq 8(%rsp), %rax # get stack top address
     movq %rsi, %rbx    # get first arg, stack top pointer
@@ -53,7 +57,9 @@ co_getenv:
     ret
 
 .globl co_getenvpre
+#if !defined(__APPLE__)
 .type co_getenvpre, @function
+#endif
 co_getenvpre:
     
     #  %rbp寄存器存储的是 上一个栈帧的 %rbp地址
@@ -66,7 +72,9 @@ co_getenvpre:
     ret
 
 .globl co_save
+#if !defined(__APPLE__)
 .type co_save, @function
+#endif
 co_save:
 
    leaq 8(%rsp),%rax     # 保存
