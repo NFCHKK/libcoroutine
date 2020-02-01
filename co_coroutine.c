@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 #include"co_coroutine.h"
 
 #define DEFAULT_STACK_SIZE (1024 * 1024)
@@ -10,7 +12,7 @@ scheduler_t g_scheduler;
 ctx_t *_co_new()
 {
     ctx_t* ctx = (ctx_t *)malloc(sizeof(ctx_t));
-    uint8_t* stack = (char *)malloc(sizeof(uint8_t) * DEFAULT_STACK_SIZE);
+    uint8_t* stack = (uint8_t *)malloc(sizeof(uint8_t) * DEFAULT_STACK_SIZE);
     ctx->ss_size = DEFAULT_STACK_SIZE;
     ctx->ss_stack = stack; 
 
@@ -42,8 +44,8 @@ void co_savecontext(ctx_t* cur, uint8_t* tbase, uint8_t* ttop)
         if(cur->ss_stack)
         {
             //栈增长是从高地址到低地址
-            memcpy(cur->ss_stack, ttop, tbase - ttop);
-            cur->ss_size = tbase - ttop;
+            memcpy(cur->ss_stack, ttop, (uint64_t)tbase - (uint64_t)ttop);
+            cur->ss_size = (uint64_t)tbase - (uint64_t)ttop;
             cur->top = ttop;
         }
     }
@@ -62,8 +64,8 @@ void co_resumecontext(ctx_t* cur)
 
 void co_yield(ctx_t* cur)
 {
-    _co_getstackpre(&base, &top);
-    co_savecontext(cur, base, top);
+    _co_getstackpre((uint8_t* )&base, (uint8_t* )&top);
+    co_savecontext(cur, (uint8_t* )base, (uint8_t*)top);
     //子协程退出点
     _co_ctxswap(cur, g_scheduler.mainctx);
     //子协程恢复点
@@ -72,8 +74,8 @@ void co_yield(ctx_t* cur)
 
 void co_resume(ctx_t* next)
 {
-    _co_getstackpre(&base, &top);
-    co_savecontext(g_scheduler.mainctx, base, top);
+    _co_getstackpre((uint8_t* )&base, (uint8_t* )&top);
+    co_savecontext(g_scheduler.mainctx, (uint8_t *)base, (uint8_t *)top);
     //主协程退出点
     _co_ctxswap(g_scheduler.mainctx, next);
     //主协程恢复点

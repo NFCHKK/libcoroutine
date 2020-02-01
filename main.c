@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<unistd.h>
 #include"co_coroutine.h"
 
 uint8_t bcoro1Run = 0, bcoro2Run = 0;
@@ -38,8 +39,8 @@ int main()
 {
     co_init();
     //保存住协程栈
-    _co_getstack(&base, &top);
-    co_savecontext(g_scheduler.mainctx, base, top);
+    _co_getstack((uint8_t *)&base, (uint8_t *)&top);
+    co_savecontext(g_scheduler.mainctx, (uint8_t *)base, (uint8_t *)top);
     //保存住协程寄存器
     _co_regsave(g_scheduler.mainctx);
     printf("main corotuine start\n");

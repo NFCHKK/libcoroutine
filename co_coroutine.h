@@ -8,7 +8,7 @@ typedef struct {
     void* reg[14];
     size_t ss_size;
     uint8_t *ss_stack;
-    uint64_t top;
+    uint8_t *top;
 } ctx_t;
 
 typedef struct {
